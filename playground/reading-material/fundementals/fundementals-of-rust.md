@@ -1,6 +1,6 @@
 # Rust
 
-# Intro
+# Introduction
 
 ## Application vs. Systems Programming
 ### Application Programming
@@ -36,3 +36,22 @@ It excels in the following aspects:
 - Rust offers detailed error messages, aiding in rapid debugging and development.
 - Asynchronous programming support in Rust facilitates efficient, non-blocking I/O operations, crucial for scalable web services.
 - The Rust ecosystem is rapidly expanding, with a wide array of libraries and tools for web development, embedded systems, and more, reflecting its growing popularity and versatility.
+
+# Environment Setup
+- Install Rust: [Rust Installation](https://www.rust-lang.org/tools/install)
+
+# Hello World Example
+1. Create a new project:
+   - `cargo new hello_world`
+2. Navigate to the project directory:
+   - `cd hello_world`
+3. Build the project:
+   - `cargo build`
+4. Run the program:
+   - In VS Code (requires the rust-analyzer extension):
+     - Execute/debug the program using the rust-analyzer extension. 
+        ![alt text](<images/run-dubug-in-vs-code.png>)
+     - Debugging guide: [VS Code Rust Debugging](https://code.visualstudio.com/docs/languages/rust#_debugging)
+   - OR directly via the executable `rustc` creates:
+     - Compile the program: `rustc .\src\main.rs`
+     - Execute the compiled program: `.\main.exe`
