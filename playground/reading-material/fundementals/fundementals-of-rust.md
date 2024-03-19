@@ -55,3 +55,157 @@ It excels in the following aspects:
    - OR directly via the executable `rustc` creates:
      - Compile the program: `rustc .\src\main.rs`
      - Execute the compiled program: `.\main.exe`
+
+# Data Types
+
+Rust provides rich data types organized into scalar, compound, and other special categories, allowing for precise and safe data handling.
+
+## Scalar Types
+Scalar types represent a single value. Rust has four primary scalar types:
+
+### Integer Types
+- Signed (negative and positive): `i8`, `i16`, `i32` (default), `i64`, `i128`, `isize` (pointer size).
+- Unsigned (positive only): `u8`, `u16`, `u32`, `u64`, `u128`, `usize` (pointer size).
+- Use underscores to improve readability: `let x: i32 = 1_000;`
+- Overflow behavior: Rust performs two's complement wrapping in debug mode, but it can be avoided with methods like `wrapping_add`, `checked_add`, etc.
+- Example:
+  ```rust
+  let x: i32 = 1_000;
+  let y: u8 = 255;
+  ```
+
+### Floating-Point Types
+- f32: Single precision.
+- f64: Double precision (default).
+- Suitable for scientific calculations requiring large decimal numbers.
+- Example:
+  ```rust
+  let pi: f64 = 3.141592;
+  let e: f32 = 2.7182;
+  ```
+
+### Boolean Type
+- bool: Can be `true` or `false`.
+- Integral in conditionals and loops.
+- Example:
+  ```rust
+  let is_active: bool = true;
+  ```
+
+### Character Type
+- char: 4 bytes, represents a Unicode Scalar Value.
+- Enclosed in single quotes: `let heart_eyed_cat = '😻';`
+
+## Compound Types
+Allow multiple values, possibly of different types, to be grouped together.
+
+### Tuple Type
+- Fixed-size, immutable once declared.
+- Can mix different types: `let tup: (i32, f64, u8) = (500, 6.4, 1);`
+- Destructure to use values: `let (x, y, z) = tup;`
+- Example:
+  ```rust
+  let tup: (i32, f64, char) = (500, 6.4, '🚀');
+  let (x, y, z) = tup; // Destructuring
+  ```
+
+### Array Type
+- All elements must be the same type.
+- Fixed length: `let a = [1, 2, 3];`
+- Access elements by indexing: `let first = a[0];`
+- Arrays are stack allocated, making them useful for data that needs to be stored on the stack rather than the heap.
+- Example:
+  ```rust
+  let months: [&str; 12] = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  ```
+
+## Special Types
+
+### The Unit Type
+- Represented by `()`, it signifies the absence of a value or that an expression doesn't return anything meaningful.
+- Example:
+  ```rust
+  fn no_return() -> () { println!("This function returns nothing."); }
+  ```
+
+### Strings
+- String Literals (&str): Immutable, stored in the binary.
+- String Object (String): Heap-allocated, mutable, growable.
+- Conversion: `let s = "hello".to_string();`
+- Example:
+  ```rust
+  let static_str: &str = "Hello, static world!";
+  let dynamic_str: String = String::from("Hello, dynamic world!");
+  ```
+
+## Enums
+- Define a type by enumerating its possible variants.
+- Use with `match` for pattern matching.
+- Can hold data: `enum Message { Quit, Move { x: i32, y: i32 }, Write(String), ChangeColor(i32, i32, i32), }`
+- Example:
+  ```rust
+  fn main() {
+      enum Direction {
+          Up,
+          Down,
+          Left,
+          Right,
+      }
+
+      let go = Direction::Up;
+
+      match go {
+          Direction::Up => println!("Going up!"),
+          _ => println!("Going somewhere else!"),
+      }
+  }
+  ```
+
+## Pattern Matching and `match`
+- Powerful control flow that compares a value against a series of patterns and executes the code of the matching pattern.
+- Patterns can be literals, variable names, wildcards, and many others.
+- Example: 
+  ```rust
+  fn main() {
+      let number = 13;
+
+      match number {
+          1 => println!("It is one!"),
+          2..=12 => println!("It is between two and twelve!"),
+          _ => println!("It is something else!"),
+      }
+  }
+  ```
+
+## Memory Safety and Management
+- Ownership: Ensures memory safety without a garbage collector.
+- Borrowing: References (&) allow you to use values without taking ownership, maintaining safety through the borrow checker.
+- Example:
+  ```rust
+  fn main() {
+      let s1 = String::from("hello");
+
+      let len = calculate_length(&s1);
+
+      println!("The length of '{}' is {}.", s1, len);
+
+      fn calculate_length(s: &String) -> usize {
+          s.len()
+      }
+  }
+  ```
+
+## Mutability
+- Immutable by default for safety and concurrency.
+- Use `mut` keyword for mutability: `let mut x = 5;`
+- Example:
+  ```rust
+  fn main() {
+      let mut count = 0;
+      count += 1;
+      println!("Count is: {}", count);
+  }
+  ```
