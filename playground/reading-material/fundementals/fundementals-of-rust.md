@@ -225,3 +225,53 @@ By default, variables in Rust are immutable (read-only) for safety and concurren
 
 - Immutable: `let fees = 25_000;`
 - Mutable: `let mut fees = 25_000;`
+
+# Constants
+
+## Declaration
+To declare a constant, use the `const` keyword followed by an explicit data type annotation. Constants require a data type to be specified, as they do not allow for type inference.
+
+- Syntax: `const VARIABLE_NAME: dataType = value;`
+
+## Naming Convention
+Constants are conventionally named using uppercase letters with underscores separating words. This convention helps distinguish constants from variables, making the code more readable.
+
+- Example: `const MAX_POINTS: u32 = 100_000;`
+
+## Constants vs. Variables
+- **Declaration**: Constants use `const`, and variables use `let`.
+- **Mutability**: Constants are always immutable. While variables are immutable by default, they can be made mutable with `mut`.
+- **Type Inference**: Constants require explicit type annotation; variables do not.
+- **Scope**: Constants can be declared in any scope, including the global scope, making them useful across different parts of a program.
+- **Runtime Evaluation**: Constants can only be set to a constant expression, not the result of a function or any value computed at runtime.
+
+## Shadowing
+Rust allows the shadowing of variables but not constants. Shadowing occurs when a new variable is declared with the same name as a previous variable, effectively overriding it within a specific scope.
+
+- Variables can be shadowed, potentially even changing the type with the new declaration.
+- Constants cannot be shadowed. Attempting to do so results in a compilation error.
+
+## Examples
+
+### Declaring Constants
+```rust
+fn main() {
+    const USER_LIMIT: i32 = 100; // Integer constant
+    const PI: f32 = 3.14;        // Float constant
+
+    println!("User limit is {}", USER_LIMIT);
+    println!("Pi value is {}", PI);
+}
+```
+
+### Attempting to Shadow a Constant
+```rust
+fn main() {
+    const NAME: &str = "Rustacean";
+    // Attempting to shadow `NAME` will result in a compile-time error
+    // const NAME: usize = NAME.len(); // This will not compile
+    println!("The name is {}", NAME);
+}
+```
+
+Constants play a crucial role in Rust's emphasis on safety and efficiency, providing a reliable mechanism for defining immutable, global values accessible across the entirety of a program.
