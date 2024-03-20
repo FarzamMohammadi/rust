@@ -3,6 +3,7 @@
 # Introduction
 
 ## Application vs. Systems Programming
+
 ### Application Programming
 - Involves creating software with a high-level, abstract approach.
 - Examples include C# and Java, languages designed for building business applications like spreadsheets, word processors, and apps for web or mobile.
@@ -69,6 +70,7 @@ Scalar types represent a single value. Rust has four primary scalar types:
 - Use underscores to improve readability: `let x: i32 = 1_000;`
 - Overflow behavior: Rust performs two's complement wrapping in debug mode, but it can be avoided with methods like `wrapping_add`, `checked_add`, etc.
 - Example:
+
   ```rust
   let x: i32 = 1_000;
   let y: u8 = 255;
@@ -79,6 +81,7 @@ Scalar types represent a single value. Rust has four primary scalar types:
 - f64: Double precision (default).
 - Suitable for scientific calculations requiring large decimal numbers.
 - Example:
+
   ```rust
   let pi: f64 = 3.141592;
   let e: f32 = 2.7182;
@@ -88,6 +91,7 @@ Scalar types represent a single value. Rust has four primary scalar types:
 - bool: Can be `true` or `false`.
 - Integral in conditionals and loops.
 - Example:
+
   ```rust
   let is_active: bool = true;
   ```
@@ -104,6 +108,7 @@ Allow multiple values, possibly of different types, to be grouped together.
 - Can mix different types: `let tup: (i32, f64, u8) = (500, 6.4, 1);`
 - Destructure to use values: `let (x, y, z) = tup;`
 - Example:
+
   ```rust
   let tup: (i32, f64, char) = (500, 6.4, '🚀');
   let (x, y, z) = tup; // Destructuring
@@ -115,6 +120,7 @@ Allow multiple values, possibly of different types, to be grouped together.
 - Access elements by indexing: `let first = a[0];`
 - Arrays are stack allocated, making them useful for data that needs to be stored on the stack rather than the heap.
 - Example:
+
   ```rust
   let months: [&str; 12] = [
     "January", "February", "March", "April", "May", "June",
@@ -127,6 +133,7 @@ Allow multiple values, possibly of different types, to be grouped together.
 ### The Unit Type
 - Represented by `()`, it signifies the absence of a value or that an expression doesn't return anything meaningful.
 - Example:
+
   ```rust
   fn no_return() -> () { println!("This function returns nothing."); }
   ```
@@ -136,6 +143,7 @@ Allow multiple values, possibly of different types, to be grouped together.
 - String Object (String): Heap-allocated, mutable, growable.
 - Conversion: `let s = "hello".to_string();`
 - Example:
+
   ```rust
   let static_str: &str = "Hello, static world!";
   let dynamic_str: String = String::from("Hello, dynamic world!");
@@ -146,6 +154,7 @@ Allow multiple values, possibly of different types, to be grouped together.
 - Use with `match` for pattern matching.
 - Can hold data: `enum Message { Quit, Move { x: i32, y: i32 }, Write(String), ChangeColor(i32, i32, i32), }`
 - Example:
+
   ```rust
   fn main() {
       enum Direction {
@@ -167,7 +176,8 @@ Allow multiple values, possibly of different types, to be grouped together.
 ## Pattern Matching and `match`
 - Powerful control flow that compares a value against a series of patterns and executes the code of the matching pattern.
 - Patterns can be literals, variable names, wildcards, and many others.
-- Example: 
+- Example:
+
   ```rust
   fn main() {
       let number = 13;
@@ -184,6 +194,7 @@ Allow multiple values, possibly of different types, to be grouped together.
 - Ownership: Ensures memory safety without a garbage collector.
 - Borrowing: References (&) allow you to use values without taking ownership, maintaining safety through the borrow checker.
 - Example:
+
   ```rust
   fn main() {
       let s1 = String::from("hello");
@@ -198,14 +209,19 @@ Allow multiple values, possibly of different types, to be grouped together.
   }
   ```
 
+# Variables
+
+## Declaration
+Variables are declared using the `let` keyword. Rust allows for optional type annotations during this process, thanks to its ability to infer data types from the values assigned to variables.
+
+- Without type specification: `let variable_name = value;`
+- With type specification: `let variable_name: dataType = value;`
+
+## Naming Conventions
+Variable names in Rust can include letters, digits, and underscores, but must start with a letter or an underscore. Rust is case-sensitive, making upper and lower case letters distinct in names.
+
 ## Mutability
-- Immutable by default for safety and concurrency.
-- Use `mut` keyword for mutability: `let mut x = 5;`
-- Example:
-  ```rust
-  fn main() {
-      let mut count = 0;
-      count += 1;
-      println!("Count is: {}", count);
-  }
-  ```
+By default, variables in Rust are immutable (read-only) for safety and concurrency. To declare a variable whose value can be changed, use the `mut` keyword.
+
+- Immutable: `let fees = 25_000;`
+- Mutable: `let mut fees = 25_000;`
