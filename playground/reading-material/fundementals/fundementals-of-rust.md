@@ -275,3 +275,103 @@ fn main() {
 ```
 
 Constants play a crucial role in Rust's emphasis on safety and efficiency, providing a reliable mechanism for defining immutable, global values accessible across the entirety of a program.
+
+# Strings
+
+## Types of Strings
+- **String Literal (`&str`)**: Known at compile time, immutable, and stored in the program's binary.
+- **String Object (`String`)**: Heap-allocated, mutable, growable, and UTF-8 encoded.
+
+## String Literal (`&str`)
+- Declared with `let` and the type `&str`.
+- Static by default; exists for the entire program's duration.
+- Example: `let company:&str = "TutorialsPoint";`
+
+## String Object (`String`)
+- Not part of the core language; provided by the Standard Library.
+- Can be created empty or from a literal.
+- Example: `let mut s = String::from("Hello");`
+
+## Common Methods for `String`
+- `new()`: Creates an empty `String`.
+- `to_string()`: Converts a literal to a `String`.
+- `replace(from, to)`: Replaces occurrences of a pattern.
+- `as_str()`: Converts `String` back to string slice `&str`.
+- `push(ch)`: Appends a character.
+- `push_str(s)`: Appends a string slice.
+- `len()`: Returns the length in bytes.
+- `trim()`: Removes leading/trailing whitespace.
+- `split_whitespace()`: Splits by whitespace into an iterator.
+- `split(pattern)`: Splits by a pattern into an iterator.
+- `chars()`: Returns an iterator over characters.
+
+## String Concatenation
+- Use `+` operator or `format!` macro for concatenation.
+- `+` requires the second string to be a slice (`&str`).
+- `format!` is more flexible and does not take ownership of the original strings.
+
+## Illustrations
+- **Creating and Modifying**: 
+    - `let mut s = String::new(); s.push_str("hello");`
+- **Replacing Substrings**: 
+    - `let replaced = s.replace("hello", "world");`
+- **Trimming Spaces**: 
+    - `let trimmed = s.trim();`
+- **Splitting Strings**: 
+    - Use `split_whitespace` or `split(',')` for specific patterns.
+- **Accessing Characters**: 
+    - Iterate with `for c in s.chars() {}`
+
+## Advanced
+- **Type Casting**: Use `to_string()` to convert numbers or other types to `String`.
+- **Using `format!` Macro**: Combine strings without taking ownership, e.g., `let full = format!("{} {}", s1, s2);`
+
+Remember to use the standard library's rich set of methods to manipulate strings effectively in Rust.
+
+# Operators
+
+## Overview
+- Operators perform functions on data (operands).
+- Types include Arithmetic, Comparison, Logical, and Bitwise.
+
+## Arithmetic Operators
+- `+`: Addition (e.g., `a + b` is 15)
+- `-`: Subtraction (e.g., `a - b` is 5)
+- `*`: Multiplication (e.g., `a * b` is 50)
+- `/`: Division (returns quotient, e.g., `a / b` is 2)
+- `%`: Modulus (returns remainder, e.g., `a % b` is 0)
+- Rust does not support `++` and `--`.
+
+## Relational Operators
+- Return Boolean value (true or false).
+- `>`: Greater than
+- `<`: Lesser than
+- `>=`: Greater than or equal to
+- `<=`: Lesser than or equal to
+- `==`: Equality
+- `!=`: Not equal
+
+## Logical Operators
+- Combine conditions, return Boolean.
+- `&&`: AND (true if all true)
+- `||`: OR (true if at least one is true)
+- `!`: NOT (inverse of expression's result)
+
+## Bitwise Operators
+- Operate on bits of integer arguments.
+- `&`: AND (1 if both bits are 1)
+- `|`: OR (1 if at least one bit is 1)
+- `^`: XOR (1 if bits are different)
+- `!`: NOT (inverts bits, e.g., `!3` is -4 because it inverts all bits)
+- `<<`: Left Shift (shifts bits left, equivalent to multiplying by 2^n)
+- `>>`: Right Shift (shifts bits right, dividing by 2^n)
+- `>>>`: Right Shift with Zero (like `>>` but fills with zeros)
+
+### Explaining Bit Operations
+- **AND (`&`)**: Each bit of the result is 1 if both corresponding bits are 1. E.g., `2 & 3` (10 & 11) is 2 (10).
+- **OR (`|`)**: Each bit is 1 if at least one of the corresponding bits is 1. E.g., `2 | 3` (10 | 11) is 3 (11).
+- **XOR (`^`)**: Each bit is 1 if the corresponding bits are different. E.g., `2 ^ 3` (10 ^ 11) is 1 (01).
+- **NOT (`!`)**: Inverts the bits of its operand. Note: In Rust, `!` applied to `3` results in `-4`, due to how binary negation works with two's complement representation.
+- **Left Shift (`<<`)**: Shifts the bits to the left, multiplying by 2 for each shift. E.g., `2 << 1` shifts bits of 2 (10) left by 1, resulting in 4 (100).
+- **Right Shift (`>>`)**: Shifts bits to the right, dividing by 2 for each shift, filling with the sign bit. E.g., `4 >> 1` shifts bits of 4 (100) right by 1, resulting in 2 (10).
+- **Right Shift with Zero (`>>>`)**: Similar to `>>` but fills shifted bits with 0. Not directly supported in Rust, but equivalent in functionality to `>>` for unsigned integers.
