@@ -375,3 +375,128 @@ Remember to use the standard library's rich set of methods to manipulate strings
 - **Left Shift (`<<`)**: Shifts the bits to the left, multiplying by 2 for each shift. E.g., `2 << 1` shifts bits of 2 (10) left by 1, resulting in 4 (100).
 - **Right Shift (`>>`)**: Shifts bits to the right, dividing by 2 for each shift, filling with the sign bit. E.g., `4 >> 1` shifts bits of 4 (100) right by 1, resulting in 2 (10).
 - **Right Shift with Zero (`>>>`)**: Similar to `>>` but fills shifted bits with 0. Not directly supported in Rust, but equivalent in functionality to `>>` for unsigned integers.
+
+# Decision Making
+
+## Decision Structures
+- `if`, `if...else`, `else...if`, and `match`.
+
+## `if` Statement
+- Executes code block if condition is true.
+
+```rust
+let num = 5;
+if num > 0 {
+   println!("number is positive");
+}
+```
+
+## `if...else` Statement
+- Executes one block if condition is true, another if false.
+
+```rust
+let num = 12;
+if num % 2 == 0 {
+   println!("Even");
+} else {
+   println!("Odd");
+}
+```
+
+## Nested `if` and `else...if`
+- Checks multiple conditions sequentially.
+
+```rust
+let num = 2;
+if num > 0 {
+    println!("{} is positive", num);
+} else if num < 0 {
+    println!("{} is negative", num);
+} else {
+    println!("{} is neither positive nor negative", num);
+}
+```
+
+## `match` Statement
+- Similar to switch case in other languages.
+- Compares a value against a series of patterns and executes the code of the matching pattern.
+
+```rust
+let state_code = "MH";
+let state = match state_code {
+    "MH" => "Maharashtra",
+    "KL" => "Kerala",
+    "KA" => "Karnataka",
+    "GA" => "Goa",
+    _ => "Unknown", // default case
+};
+println!("State name is {}", state);
+```
+
+# Loops
+
+## Overview
+- Rust provides `while`, `loop`, and `for` for handling loops.
+
+## For Loop (Definite Loop)
+- Executes a block of code a fixed number of times.
+- Iterates over a range or collection.
+
+```rust
+for x in 1..11 { // 11 is not inclusive
+    if x == 5 {
+        continue; // Skips the rest of this iteration
+    }
+    println!("x is {}", x);
+}
+// Note: `x` is accessible only within the for loop block.
+```
+
+## While Loop (Indefinite Loop)
+- Executes as long as a condition remains true.
+
+```rust
+let mut x = 0;
+while x < 10 {
+    x += 1;
+    println!("inside loop x value is {}", x);
+}
+println!("outside loop x value is {}", x);
+```
+
+## Loop (Indefinite Loop)
+- Executes indefinitely until explicitly terminated with `break`.
+
+```rust
+let mut x = 0;
+loop {
+    x += 1;
+    println!("x={}", x);
+
+    if x == 15 {
+        break; // Exits the loop
+    }
+}
+// `break` exits the loop, `continue` skips to the next iteration.
+```
+
+## Continue Statement
+- Skips the current loop iteration and proceeds with the next one.
+
+```rust
+let mut count = 0;
+for num in 0..21 {
+    if num % 2 == 0 {
+        continue; // Skips even numbers
+    }
+    count += 1;
+}
+println!("The count of odd values between 0 and 20 is: {}", count);
+// Counts and prints the number of odd values between 0 and 20.
+```
+
+## Key Points
+- `for` loop is used for definite iterations.
+- `while` and `loop` can be used for indefinite iterations, with `loop` running infinitely unless stopped by `break`.
+- `continue` skips the rest of the current iteration.
+- Loops are a fundamental part of controlling the flow of a Rust program, allowing repetitive tasks to be performed efficiently.
