@@ -326,13 +326,7 @@ Constants play a crucial role in Rust's emphasis on safety and efficiency, provi
 - **Type Casting**: Use `to_string()` to convert numbers or other types to `String`.
 - **Using `format!` Macro**: Combine strings without taking ownership, e.g., `let full = format!("{} {}", s1, s2);`
 
-Remember to use the standard library's rich set of methods to manipulate strings effectively in Rust.
-
 # Operators
-
-## Overview
-- Operators perform functions on data (operands).
-- Types include Arithmetic, Comparison, Logical, and Bitwise.
 
 ## Arithmetic Operators
 - `+`: Addition (e.g., `a + b` is 15)
@@ -500,3 +494,154 @@ println!("The count of odd values between 0 and 20 is: {}", count);
 - `while` and `loop` can be used for indefinite iterations, with `loop` running infinitely unless stopped by `break`.
 - `continue` skips the rest of the current iteration.
 - Loops are a fundamental part of controlling the flow of a Rust program, allowing repetitive tasks to be performed efficiently.
+
+# Functions
+
+## Key Concepts
+
+### 1. Defining a Function
+- Use the `fn` keyword.
+- Functions can optionally have parameters.
+- Syntax: `fn function_name(param1, param2..paramN) { // function body }`
+- Example:
+  ```rust
+  fn fn_hello(){
+     println!("hello from function fn_hello ");
+  }
+  ```
+
+### 2. Invoking a Function
+- Functions must be called to execute.
+- The function that invokes another function is called the caller function.
+  - e.g. `main()` in the example below.
+- Syntax: `function_name(val1, val2, valN)`
+- Example:
+  ```rust
+  fn main(){  //Here, main() is the caller function.
+    // Calling a function
+    fn_hello();
+  }
+
+  //Defining a function
+  fn fn_hello(){
+    println!("hello from function fn_hello ");
+  }
+  ```
+
+### 3. Returning Functions
+- Functions can return values using `return` keyword or by the last expression without a semicolon.
+- Syntax1: `fn function_name() -> return_type { return value; }`
+- Syntax2: `fn function_name() -> return_type { value } // no semicolon`
+- Example:
+  ```rust
+  fn main(){
+     println!("pi value is {}", get_pi());
+  }
+  fn get_pi() -> f64 {
+     22.0/7.0
+  }
+  ```
+
+### 4. Function with Parameters
+- Parameters pass values to functions.
+- Passed by value or by reference.
+- Pass by value: Copies the actual value, changes inside function don't affect the original variable.
+- Pass by reference: Uses `&` to refer to the original memory location, changes inside function affect the original variable.
+- Example (Pass by Value):
+  ```rust
+  fn main(){
+     let no: i32 = 5;
+     mutate_no_to_zero(no);
+     println!("The value of no is:{}", no);
+  }
+  fn mutate_no_to_zero(mut param_no: i32) {
+     param_no = 0;
+     println!("param_no value is :{}", param_no);
+  }
+  ```
+
+- Example (Pass by Reference):
+  ```rust
+  fn main() {
+     let mut no: i32 = 5;
+     mutate_no_to_zero(&mut no);
+     println!("The value of no is:{}", no);
+  }
+  fn mutate_no_to_zero(param_no: &mut i32) {
+     *param_no = 0; // dereferencing
+  }
+  ```
+
+### Passing Strings to Functions
+## String Passing and Ownership
+- When a `String` object is passed to a function, Rust uses move semantics unless explicitly borrowed.
+- This means the original variable no longer owns the `String` and cannot be used after being passed unless it's passed by reference.
+- Passing by reference (`&String`) or mutable reference (`&mut String`) avoids taking ownership, allowing the original variable to remain usable.
+- Example (Ownership is moved):
+  ```rust
+  fn main(){
+     let name = String::from("TutorialsPoint");
+     display(name); 
+     // Error: `name` value moved and not accessible here
+  }
+  fn display(param_name: String) {
+     println!("Name: {}", param_name);
+  }
+  ```
+- Example (Passing by reference, ownership not moved):
+  ```rust
+  fn main(){
+     let name = String::from("TutorialsPoint");
+     display(&name); 
+     // `name` is still accessible here
+  }
+  fn display(param_name: &String) {
+     println!("Name: {}", param_name);
+  }
+  ```
+
+## Tuple
+
+### Overview
+- Tuples are compound data types that store more than one value at a time, potentially of different types.
+- They have a fixed length and cannot grow or shrink.
+- Tuple index starts from 0.
+
+### Syntax
+- To declare a tuple: `let tuple_name:(data_type1, data_type2, data_type3) = (value1, value2, value3);`
+- Alternatively: `let tuple_name = (value1, value2, value3);`
+
+### Accessing Values
+- Use `tuple_name.index` to access individual values.
+- Example:
+  ```rust
+  let tuple:(i32, f64, u8) = (-325, 4.9, 22);
+  println!("integer: {:?}", tuple.0); // Accesses the first value
+  println!("float: {:?}", tuple.1); // Accesses the second value
+  println!("unsigned integer: {:?}", tuple.2); // Accesses the third value
+
+### Passing Tuples to Functions
+- Tuples can be passed by value to functions.
+- Example:
+  ```rust
+  fn main(){
+     let b:(i32, bool, f64) = (110, true, 10.9);
+     print_tuple(b);
+  }
+  fn print_tuple(x:(i32, bool, f64)){
+     println!("Inside print_tuple method");
+     println!("{:?}", x);
+  }
+
+### Destructuring
+- Destructuring allows unpacking of tuple values into separate variables.
+- Example:
+  ```rust
+  fn main(){
+     let b:(i32, bool, f64) = (30, true, 7.9);
+     print_tuple(b);
+  }
+  fn print_tuple(x:(i32, bool, f64)){
+     let (age, is_male, cgpa) = x; // Destructuring
+     println!("Age: {} , isMale? {}, CGPA: {}", age, is_male, cgpa);
+  }
