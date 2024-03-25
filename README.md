@@ -1,2 +1,3 @@
-playground: for notes, learning, anything we want to fuck around with.
-war-room: for serious big boy stuff, like the new project we're going to work on.
+Playground: for notes, learning, and anything we want to experiment with.
+
+War room: for serious matters, like the new project we're planning to work on.
