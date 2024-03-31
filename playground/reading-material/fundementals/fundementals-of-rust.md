@@ -614,33 +614,40 @@ println!("The count of odd values between 0 and 20 is: {}", count);
 ### Accessing Values
 - Use `tuple_name.index` to access individual values.
 - Example:
-  ```rust
-  let tuple:(i32, f64, u8) = (-325, 4.9, 22);
-  println!("integer: {:?}", tuple.0); // Accesses the first value
-  println!("float: {:?}", tuple.1); // Accesses the second value
-  println!("unsigned integer: {:?}", tuple.2); // Accesses the third value
+  
+   ```rust
+   let tuple:(i32, f64, u8) = (-325, 4.9, 22);
+   println!("integer: {:?}", tuple.0); // Accesses the first value
+   println!("float: {:?}", tuple.1); // Accesses the second value
+   println!("unsigned integer: {:?}", tuple.2); // Accesses the third value
+   ```
 
 ### Passing Tuples to Functions
 - Tuples can be passed by value to functions.
 - Example:
-  ```rust
-  fn main(){
-     let b:(i32, bool, f64) = (110, true, 10.9);
-     print_tuple(b);
-  }
-  fn print_tuple(x:(i32, bool, f64)){
-     println!("Inside print_tuple method");
-     println!("{:?}", x);
-  }
+
+   ```rust
+   fn main(){
+      let b:(i32, bool, f64) = (110, true, 10.9);
+      print_tuple(b);
+   }
+
+   fn print_tuple(x:(i32, bool, f64)){
+      println!("Inside print_tuple method");
+      println!("{:?}", x);
+   }
+   ```
 
 ### Destructuring
 - Destructuring allows unpacking of tuple values into separate variables.
 - Example:
+  
   ```rust
   fn main(){
      let b:(i32, bool, f64) = (30, true, 7.9);
      print_tuple(b);
   }
+
   fn print_tuple(x:(i32, bool, f64)){
      let (age, is_male, cgpa) = x; // Destructuring
      println!("Age: {} , isMale? {}, CGPA: {}", age, is_male, cgpa);
@@ -680,6 +687,7 @@ fn main() {
 ```
 
 Outputs:
+
 ```plaintext
 array is [-1, -1, -1, -1]
 array size is :4
@@ -688,6 +696,7 @@ array size is :4
 ## Iterating Arrays
 
 ### For Loop
+
 ```rust
 fn main() {
    let arr: [i32; 4] = [10, 20, 30, 40];
@@ -701,6 +710,7 @@ fn main() {
 ```
 
 Outputs:
+
 ```plaintext
 array is [10, 20, 30, 40]
 array size is :4
@@ -711,6 +721,7 @@ index is: 3 & value is : 40
 ```
 
 ### `iter()` Function
+
 ```rust
 fn main() {
 let arr: [i32; 4] = [10, 20, 30, 40];
@@ -735,6 +746,7 @@ value is :40
 
 ## Array Mutation
 Similar to C#:
+
 ```rust
 fn main() {
    let mut arr: [i32; 4] = [10, 20, 30, 40];
@@ -752,6 +764,7 @@ Outputs:
 Arrays can be passed by value or reference.
 
 ### Passing By Value
+
 ```rust
 fn main() {
    let arr = [10, 20, 30];
@@ -769,12 +782,14 @@ fn update(mut arr: [i32; 3]) {
 ```
 
 Outputs:
+
 ```plaintext
 Inside update [0, 0, 0]
 Inside main [10, 20, 30]
 ```
 
 ### Passing By Reference
+
 ```rust
 fn main() {
    let mut arr = [10, 20, 30];
@@ -791,12 +806,14 @@ fn update(arr: &mut [i32; 3]) {
 ```
 
 Outputs:
+
 ```plaintext
 Inside update [0, 0, 0]
 Inside main [0, 0, 0]
 ```
 
 ## Array Declaration and Constants
+
 ```rust
 fn main() {
    let N: usize = 20;
@@ -808,6 +825,7 @@ fn main() {
 The compiler throws an exception because the array's length cannot be determined at compile time. `N` variable value will be determined at runtime, not compile time.
 
 To fix we set `N` as a constant. This way, its value can be determined at compile time and therefore cannot be changed at runtime:
+
 ```rust
 fn main() {
    const N: usize = 20; 
@@ -816,3 +834,95 @@ fn main() {
    print!("{}", arr[10])
 }
 ```
+
+# Memory Allocation
+The memory of a program is allocated in
+1. Stack
+2. Heap
+
+## Stack
+- Operates on a last-in, first-out basis.
+- Ideal for storing fixed-size values known at compile time, such as variables of type `i32`.
+- All scalar values (e.g., integers, booleans) are stored here due to their predetermined size.
+
+## Heap
+- Accommodates values with sizes unknown at compile time or those that can change size, like strings.
+- Serves for dynamic data storage, accommodating growth or shrinkage over the program's lifecycle.
+- The Heap is less structured compared to the Stack, allowing for the flexibility of dynamic memory allocation.
+
+# Memory Management
+## Ownership
+- Every value in Rust has a unique 'owner'.
+  - For example, in `let age = 30`, `age` owns the data value `30`.
+- A piece of data can only have one owner at a time.
+  - Data refers to the location in memory, not the value itself.
+- Two variables cannot directly reference the same memory location.
+- Primitive types are copied when assigned or passed to functions, not following the strict ownership rules.
+  - Primitives are simpler and take up less memory, making copying efficient.
+- Strict ownership rules apply to non-primitive types.
+  - Copying complex data structures, like arrays, is resource-intensive.
+
+## Transferring Ownership
+Ownership can be transferred by:
+1. Assigning the value of one variable to another
+2. Passing the value to a function
+3. Returning the value from a function
+
+### Assigning the value of one variable to another
+In the example:
+
+```rust
+fn main(){
+   let v = vec![1,2,3]; 
+   // vector v owns the object in heap
+
+   // only a single variable owns the heap memory at any given time
+   let v2 = v; 
+   // here two variables owns heap value,
+   // two pointers to the same content is not allowed in rust
+
+   // Rust is very smart in terms of memory access ,so it detects a race condition
+   // as two variables point to same heap
+
+   println!("{:?}",v); // Throws exception due to race condition
+}
+```
+
+The variable `v` loses its ownership once it's assigned to `v2`, making `v` unusable thereafter.
+
+### Passing value to a function
+In the example:
+
+```rust
+fn main(){
+   let v = vec![1,2,3];     // vector v owns the object in heap
+   let v2 = v;              // moves ownership to v2
+   display(v2);             // v2 is moved to display and v2 is invalidated
+   println!("In main {:?}",v2);    //v2 is No longer usable here
+}
+
+fn display(v:Vec<i32>){
+   println!("inside display {:?}",v);
+}
+```
+
+The `println!` call will result in a compile-time error because `v2` is no longer valid after being moved to the function.
+
+### Returning value from a function
+In this snippet:
+
+```rust
+fn main(){
+   let v = vec![1,2,3];       // vector v owns the object in heap
+   let v2 = v;                // moves ownership to v2
+   let v2_return = display(v2);    
+   println!("In main {:?}",v2_return);
+}
+
+fn display(v:Vec<i32>)->Vec<i32> { 
+   // returning same vector
+   println!("inside display {:?}",v);
+}
+```
+
+Both `v` and `v2` are invalidated during their transfer. `v` is invalidated when assigned to `v2`, and `v2` is invalidated when passed to the function. We regain access to the same value and its memory location by returning it from the function.
