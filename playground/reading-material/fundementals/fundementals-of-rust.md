@@ -645,3 +645,174 @@ println!("The count of odd values between 0 and 20 is: {}", count);
      let (age, is_male, cgpa) = x; // Destructuring
      println!("Age: {} , isMale? {}, CGPA: {}", age, is_male, cgpa);
   }
+  ```
+
+# Arrays
+- Arrays hold multiple values, unlike scalar variables which hold one value.
+- Arrays allocate memory sequentially, unlike variables which allocate randomly.
+- An array is a collection of similar values.
+- Arrays are fixed in size once initialized.
+- Each array element occupies a memory block.
+- Array elements are accessed by a unique index.
+- Array values can be updated but not deleted.
+
+## Examples of Array Declaration
+
+```rust
+// Syntax1 - Array type inferred from first element's data type
+let variable_name = [value1, value2, value3];
+
+// Syntax2 - Explicit type and size
+let variable_name: [dataType; size] = [value1, value2, value3];
+
+// Syntax3 - Initialize all elements to a default value
+let variable_name: [dataType; size] = [default_value_for_elements; size];
+```
+
+## Array Declaration With Default Values
+
+```rust
+fn main() {
+   let arr: [i32; 4] = [-1; 4];
+   println!("array is {:?}", arr);
+   println!("array size is :{}", arr.len());
+}
+```
+
+Outputs:
+```plaintext
+array is [-1, -1, -1, -1]
+array size is :4
+```
+
+## Iterating Arrays
+
+### For Loop
+```rust
+fn main() {
+   let arr: [i32; 4] = [10, 20, 30, 40];
+   println!("array is {:?}", arr);
+   println!("array size is :{}", arr.len());
+
+   for index in 0..4 {
+      println!("index is: {} & value is : {}", index, arr[index]);
+   }
+}
+```
+
+Outputs:
+```plaintext
+array is [10, 20, 30, 40]
+array size is :4
+index is: 0 & value is : 10
+index is: 1 & value is : 20
+index is: 2 & value is : 30
+index is: 3 & value is : 40
+```
+
+### `iter()` Function
+```rust
+fn main() {
+let arr: [i32; 4] = [10, 20, 30, 40];
+   println!("array is {:?}", arr);
+   println!("array size is :{}", arr.len());
+
+   for val in arr.iter() {
+      println!("value is :{}", val);
+   }
+}
+```
+
+Outputs:
+```plain text
+array is [10, 20, 30, 40]
+array size is :4
+value is :10
+value is :20
+value is :30
+value is :40
+```
+
+## Array Mutation
+Similar to C#:
+```rust
+fn main() {
+   let mut arr: [i32; 4] = [10, 20, 30, 40];
+   arr[1] = 0;
+   println!("{:?}", arr);
+}
+```
+
+Outputs:
+```plaintext
+[10, 0, 30, 40]
+```
+
+## Passing Arrays as Parameters to Functions
+Arrays can be passed by value or reference.
+
+### Passing By Value
+```rust
+fn main() {
+   let arr = [10, 20, 30];
+   update(arr);
+
+   print!("Inside main {:?}", arr);
+}
+
+fn update(mut arr: [i32; 3]) {
+   for i in 0..3 {
+      arr[i] = 0;
+   }
+   println!("Inside update {:?}", arr);
+}
+```
+
+Outputs:
+```plaintext
+Inside update [0, 0, 0]
+Inside main [10, 20, 30]
+```
+
+### Passing By Reference
+```rust
+fn main() {
+   let mut arr = [10, 20, 30];
+   update(&mut arr);
+   print!("Inside main {:?}", arr);
+}
+
+fn update(arr: &mut [i32; 3]) {
+   for i in 0..3 {
+      arr[i] = 0;
+   }
+   println!("Inside update {:?}", arr);
+}
+```
+
+Outputs:
+```plaintext
+Inside update [0, 0, 0]
+Inside main [0, 0, 0]
+```
+
+## Array Declaration and Constants
+```rust
+fn main() {
+   let N: usize = 20;
+   let arr = [0; N]; //Error: non-constant used with constant
+   print!("{}", arr[10])
+}
+```
+
+The compiler throws an exception because the array's length cannot be determined at compile time. `N` variable value will be determined at runtime, not compile time.
+
+To fix we set `N` as a constant. This way, its value can be determined at compile time and therefore cannot be changed at runtime:
+```rust
+fn main() {
+   const N: usize = 20; 
+   let arr = [0; N];
+
+   print!("{}", arr[10])
+}
+```
