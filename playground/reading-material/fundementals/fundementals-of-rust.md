@@ -920,9 +920,127 @@ fn main(){
 }
 
 fn display(v:Vec<i32>)->Vec<i32> { 
-   // returning same vector
    println!("inside display {:?}",v);
 }
 ```
 
 Both `v` and `v2` are invalidated during their transfer. `v` is invalidated when assigned to `v2`, and `v2` is invalidated when passed to the function. We regain access to the same value and its memory location by returning it from the function.
+
+# Borrowing
+Borrowing in Rust allows for the temporary use of a value without transferring ownership. This is particularly useful when you want to access data while still keeping it under the original owner's control.
+
+- Borrowing is achieved by passing a reference (`&var_name`) instead of the actual value. This method temporarily lends the value to a function or another variable without giving up ownership.
+- A reference allows a function to access the value without owning it, ensuring that the original owner retains its ownership rights after the function completes.
+
+   ```rust
+   fn main(){
+      let v = vec![10,20,30];
+      print_vector(&v); // passing reference
+      println!("Printing the value from main() v[0]={}",v[0]);
+   }
+
+   fn print_vector(x:&Vec<i32>){
+      println!("Inside print_vector function {:?}",x);
+   }
+   ```
+## Mutable References
+By default, references in Rust are immutable, meaning the borrowed data cannot be altered. If you need to modify the borrowed data, Rust requires explicit permissions through mutable references.
+
+- To create a mutable reference, both the original data and the reference must be declared as mutable (`mut`). This explicit handling helps prevent data races by ensuring that only one mutable reference to a piece of data exists at a time in a given scope.
+- Mutable references allow temporary modification rights to the borrowed data, under strict rules to ensure safe concurrency.
+
+   ```rust
+   fn main() {
+      let mut i = 3;
+      add_one(&mut i);
+      println!("{}", i);
+   }
+
+   fn add_one(e: &mut i32) {
+      *e+= 1;
+   }
+   ```
+
+# Slices
+Slices provide a way to access contiguous segments of data in structures like arrays, vectors, and strings without copying the original data.
+
+- Essentially, slices are references to a portion of data, allowing efficient access without ownership transfer.
+- Important: In Rust, slice ranges are defined with a start index (inclusive) and an end index (exclusive). Thus, a slice from [start..end] includes the element at the start index up to, but not including, the element at the end index.
+
+Example 1:
+
+```rust
+fn main() {
+   let n1 = "Tutorials".to_string();
+   println!("length of string is {}",n1.len());
+   let c1 = &n1[4..9]; 
+   
+   // fetches characters at 4,5,6,7, and 8 indexes
+   println!("{}",c1);
+}
+```
+
+Output:
+
+```plaintext
+length of string is 9
+rials
+```
+
+In this example, a slice of a String object is created, capturing a portion of the string based on specified indices.
+
+Example 2:
+
+```rust
+fn main(){
+   let data = [10,20,30,40,50];
+   use_slice(&data[1..4]);
+   //this is effectively borrowing elements for a while
+}
+
+fn use_slice(slice:&[i32]) { 
+   // is taking a slice or borrowing a part of an array of i32s
+   println!("length of slice is {:?}",slice.len());
+   println!("{:?}",slice);
+}
+```
+
+Output:
+
+```plaintext
+length of slice is 3
+[20, 30, 40]
+```
+
+This example demonstrates slicing an array to access a subset of its elements, effectively borrowing part of the array for temporary use.
+
+## Mutable Slices
+Just as variables can be mutable, slices can also be mutable when declared with the `mut` keyword.
+
+Example:
+
+```rust
+fn main(){
+   let mut data = [10,20,30,40,50];
+   use_slice(&mut data[1..4]);
+   // passes references of 
+   20, 30 and 40
+   println!("{:?}",data);
+}
+
+fn use_slice(slice:&mut [i32]) {
+   println!("length of slice is {:?}",slice.len());
+   println!("{:?}",slice);
+   slice[0] = 1010; // replaces 20 with 1010
+}
+```
+
+Output:
+
+```plaintext
+length of slice is 3
+[20, 30, 40]
+[10, 1010, 30, 40, 50]
+```
+
+Here, a mutable slice of an array is created, allowing modification of the elements within the specified range. Note how the first element of the slice is modified, demonstrating the mutable nature of slices.
