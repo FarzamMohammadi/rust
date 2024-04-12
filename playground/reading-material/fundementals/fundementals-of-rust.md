@@ -1044,3 +1044,316 @@ length of slice is 3
 ```
 
 Here, a mutable slice of an array is created, allowing modification of the elements within the specified range. Note how the first element of the slice is modified, demonstrating the mutable nature of slices.
+
+# Structure
+Structures, or structs, allow us to package together data items of different types, including other structures. They define data as key-value pairs.
+
+## Struct Declaration & Initialization
+- Use the `struct` keyword to define a structure.
+- Structs are statically typed and must be associated with a specific data type.
+- Struct naming follows the same rules as variables.
+- When initializing a struct, a struct block must end with a semicolon.
+
+```rust
+struct Employee {
+   name:String,
+   company:String,
+   age:u32
+}
+
+fn main() {
+   let employee_one = Employee {
+      company:String::from("Dudes In the Hood"),
+      name:String::from("Farzam"),
+      age:69
+   };
+   println!("Name is :{} company is {} age is {}", employee_one.name, employee_one.company, employee_one.age);
+}
+```
+
+## Struct Mutation
+To mutate a struct, the struct itself must be declared as mutable using the `mut` keyword. Once declared, its fields can be altered.
+
+```rust
+let mut employee_one = Employee {
+   company:String::from("Dudes In the Hood"),
+   name:String::from("Farzam"),
+   age:69
+};
+
+employee_one.age = 27;
+
+println!("Name is :{} company is {} age is {}", employee_one.name, employee_one.company, employee_one.age);
+```
+
+## Struct Function Handling
+Structs can be passed to and returned from functions, demonstrating how functions can operate on and return structs.
+
+```rust
+fn main() {
+   let employee_one = Employee {
+      company:String::from("Dudes In the Hood"),
+      name:String::from("Farzam"),
+      age:69
+   };
+
+   let employee_one = Employee {
+      company:String::from("Dudes In the Hood"),
+      name:String::from("Billy"),
+      age:96
+   };
+
+   let elder = who_is_elder(emp1,emp2);
+
+   println!("elder is:");
+
+   display(elder);
+   // Output:
+   // elder is:
+   // Name is :Billy company is Dudes In the Hood age is 96
+}
+
+fn who_is_elder (employee_one:Employee, employee_two:Employee)->Employee {
+   if employee_one.age > employee_two.age {
+      return employee_one;
+   } else {
+      return employee_two;
+   }
+}
+
+fn display(employee:Employee) {
+   println!("Name is :{} company is {} age is {}", employee.name, employee.company, employee.age);
+}
+
+struct Employee {
+   name:String,
+   company:String,
+   age:u32
+}
+```
+
+## Structure Instance Methods
+Instance methods for structs are defined within an `impl` (implementation) block. These methods can access or modify the state of the struct instance.
+
+- The first parameter of an instance method is always `self`, which represents the instance on which the method is being called.
+- Instance methods are similar to class methods in object-oriented programming.
+
+```rust
+struct Rectangle {
+   width:u32, 
+   height:u32
+}
+
+impl Rectangle {
+   fn area(&self) -> u32 {
+      self.width * self.height
+   }
+}
+
+fn main() {
+   let small = Rectangle {
+      width:10,
+      height:20
+   };
+
+   println!("width is {} height is {} area of Rectangle is {}", small.width, small.height, small.area());
+}
+```
+
+## Struct Static Methods
+Static methods are associated with the struct itself, not any particular instance. They do not take `self` as a parameter.
+
+- Static methods are called using the syntax `StructureName::methodName(arguments)`.
+
+```rust
+struct Point {
+   x: i32,
+   y: i32,
+}
+
+impl Point {
+   fn getInstance(x: i32, y: i32) -> Point {
+      Point { x: x, y: y }
+   }
+
+   fn display(&self){
+      println!("x ={} y={}",self.x,self.y );
+   }
+}
+
+fn main(){
+   let p1 = Point::getInstance(10,20);
+
+   p1.display();
+}
+```
+
+# Enums
+
+## Basic Enum
+Enums allow you to define a type by enumerating its possible variants. Here's a simple example of an enum representing gender categories:
+
+```rust
+// The `derive` attribute automatically provides the implementation required to make this `enum` printable with `fmt::Debug`.
+#[derive(Debug)]
+enum GenderCategory {
+   Male,
+   Female
+}
+
+fn main() {
+   let male = GenderCategory::Male;
+   let female = GenderCategory::Female;
+
+   println!("{:?}", male); // Male
+   println!("{:?}", female); // Female
+}
+```
+
+## Struct With Enum
+Structs can include enums as fields. This allows for a composition of complex types, adding flexibility in data structuring. Here's how an enum can be used inside a struct:
+
+```rust
+#[derive(Debug)]
+struct Person {
+   name:String,
+   gender:GenderCategory
+}
+
+fn main() {
+   let p1 = Person {
+      name:String::from("Farzam"),
+      gender:GenderCategory::Male
+   };
+
+   let p2 = Person {
+      name:String::from("Amy"),
+      gender:GenderCategory::Female
+   };
+
+   println!("{:?}",p1); Person { name: "Farzam", gender: Male }
+
+   println!("{:?}",p2); Person { name: "Amy", gender: Female }
+}
+```
+
+## Option Enum
+The `Option` enum is predefined in Rust's standard library and is used to encapsulate the possible absence of a value. It's a safer alternative to nulls found in other languages.
+
+- `Some(T)`: Contains a value of type `T`.
+- `None`: Represents the absence of a value.
+
+```rust
+enum Option<T> {
+   Some(T),      // used to return a value
+   None          // used to return null, as Rust doesn't support the null keyword
+}
+```
+
+```rust
+fn main() {
+   let result = is_even(3);
+
+   println!("{:?}", result); // None
+   println!("{:?}", is_even(30)); // Some(true)
+}
+
+fn is_even(no:i32)->Option<bool> {
+   if no%2 == 0 {
+      Some(true)
+   } else {
+      None
+   }
+}
+```
+
+## Match Statement & Enum
+The `match` statement in Rust is a control flow construct that allows handling of different cases based on the enum variants. It's similar to switch statements in other languages but is more powerful.
+
+```rust
+enum CarType {
+   Hatch,
+   Sedan,
+   Suv
+}
+
+fn print_size(car:CarType) {
+   match car {
+      CarType::Hatch => {
+         println!("Small sized car");
+      },
+      CarType::Sedan => {
+         println!("medium sized car");
+      },
+      CarType::Suv =>{
+         println!("Large sized Sports Utility car");
+      }
+   }
+}
+
+fn main(){
+   print_size(CarType::Suv); // Large sized Sports Utility car
+   print_size(CarType::Hatch); // Small sized car
+   print_size(CarType::Sedan); // Medium sized car
+}
+```
+
+## Match Statement With Option
+The `match` statement can be effectively used with the `Option` enum to handle cases where a value might or might not be present.
+
+```rust
+fn main() {
+   match is_even(5) {
+      Some(data) => {
+         if data==true {
+            println!("Even no");
+         }
+      },
+      None => {
+         println!("Not even");
+      }
+   }
+}
+
+fn is_even(no:i32)->Option<bool> {
+   if no%2 == 0 {
+      Some(true)
+   } else {
+      None
+   }
+}
+
+// Output: Not even
+```
+
+## Enum with Associated Data
+Enums can also hold different types of data in each of their variants. This allows for versatile data structures that are neatly encapsulated within an enum.
+
+```rust
+#[derive(Debug)]
+enum GenderCategory {
+   Name(String),Usr_ID(i32)
+}
+
+fn main() {
+   let p1 = GenderCategory::Name(String::from("Farzam"));
+   let p2 = GenderCategory::Usr_ID(100);
+
+   println!("{:?}", p1);
+   println!("{:?}", p2);
+
+   match p1 {
+      GenderCategory::Name(val)=> {
+         println!("{}", val);
+      }
+      GenderCategory::Usr_ID(val)=> {
+         println!("{}", val);
+      }
+   }
+}
+
+// Output:
+// Name("Farzam")
+// Usr_ID(100)
+// Farzam
+```
