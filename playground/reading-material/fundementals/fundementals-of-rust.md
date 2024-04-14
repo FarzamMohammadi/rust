@@ -1357,3 +1357,139 @@ fn main() {
 // Usr_ID(100)
 // Farzam
 ```
+
+# Modules
+Modules in Rust organize code within a crate into namespaces, helping to manage code's scope and privacy.
+
+## Basics of Modules
+- `Module`: A logical group of code within a crate. Modules can be either public or private, with private being the default.
+  - Use the `pub` keyword to make modules or functions within them public.
+
+## Crates
+- `Crate`: A package of Rust code. It can be compiled into a binary or a library.
+  - Binary Crate: Contains a `main()` function and compiles into an executable.
+  - Library Crate: Does not contain `main()` and is intended for reuse in other projects.
+
+## Cargo and crates.io
+- `Cargo`: Rust’s package manager and build tool.
+- `crates.io`: The official Rust package registry.
+
+Example of a simple module:
+
+```rust
+pub mod movies {
+   pub fn play(name:String) {
+      println!("Playing movie: {}", name);
+   }
+}
+
+fn main(){
+   movies::play("The Matrix".to_string());  // Playing movie: The Matrix
+}
+```
+
+## `use` Keyword
+- The `use` keyword simplifies the path required to refer to modules or functions, effectively allowing aliases or shorter paths.
+
+Example of using the `use` keyword:
+
+```rust
+pub mod movies {
+   pub fn play(name:String) {
+      println!("Playing movie: {}", name);
+   }
+}
+
+use movies::play;
+
+fn main(){
+   play("The Matrix".to_string()); // Playing movie: The Matrix
+}
+```
+
+## Nested Modules
+- Modules can be nested within each other, allowing for structured and hierarchical organization of code.
+
+Example of nested modules:
+
+```rust
+pub mod movies {
+   pub mod english {
+      pub mod comedy {
+         pub fn play(name:String) {
+            println!("Playing comedy movie {}",name);
+         }
+      }
+   }
+}
+
+use movies::english::comedy::play; 
+
+fn main() {
+   // short path syntax
+   play("Harold and Kumar".to_string()); // Playing comedy movie Harold and Kumar
+   play("The Hangover".to_string()); // Playing comedy movie The Hangover
+
+   //full path syntax
+   movies::english::comedy::play("Airplane!".to_string()); // Playing comedy movie Airplane!
+}
+```
+
+Links for further reading on creating and using a library crate:
+- Creating a library: [Rust By Example - Library Crates](https://doc.rust-lang.org/rust-by-example/crates/lib.html)
+- Using a library: [Rust By Example - Using a Library](https://doc.rust-lang.org/rust-by-example/crates/using_lib.html#using-a-library)
+
+# Collections
+
+## Vector
+Vector is a resizable array that stores values in contiguous memory blocks. The predefined structure `Vec` can be used to create vectors.
+
+- A Vector can grow or shrink at runtime.
+- A Vector is a homogeneous collection.
+- A Vector stores data as sequence of elements in a particular order. Every element in a Vector is assigned a unique index number. The index starts from 0 and goes up to n-1 where, n is the size of the collection. For example, in a collection of 5 elements, the first element will be at index 0 and the last element will be at index 4.
+- A Vector will only append values to (or near) the end. In other words, a Vector can be used to implement a stack.
+- Memory for a Vector is allocated in the heap.
+
+### Vector Creation
+1. Using `new()` static method of the Vec struct.
+
+```rust
+fn main() {
+   let mut v = Vec::new();
+   v.push(20);
+   v.push(30);
+   v.push(40);
+
+   println!("size of vector is :{}", v.len()); // size of vector is :3
+   println!("{:?}", v); // [20, 30, 40]
+}
+```
+
+OR 
+
+2. Using `vec!` macro.
+
+```rust
+fn main() {
+   let v = vec![1,2,3];
+
+   println!("{:?}", v); // [1, 2, 3]
+}
+```
+
+### Common Vec Strcut methods
+- `new()`:
+  - `pub fn new()->Vect`
+  - Constructs a new, empty Vec. The vector will not allocate until elements are pushed onto it
+- `push()`:
+  - `pub fn push(&mut self, value: T)`
+  - Appends an element to the back of a collection.
+- `remove()`:
+  - `pub fn remove(&mut self, index: usize) -> T`
+  - Removes and returns the element at position index within the vector, shifting all elements after it to the left.
+- `contains()`:
+  - `pub fn contains(&self, x: &T) -> bool`
+  - Returns true if the slice contains an element with the given value.
+- `len()`:
+  - `pub fn len(&self) -> usize`
+  - Returns the number of elements in the vector, also referred to as its 'length'.
